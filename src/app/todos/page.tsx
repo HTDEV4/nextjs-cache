@@ -2,24 +2,29 @@ import React from "react";
 import Delete from "./_components/Delete";
 import Form from "./_components/Form";
 import View from "./_components/View";
+import { unstable_cache } from "next/cache";
+// import { cache } from "react";
 
 interface ITodo {
     id: string;
     title: string;
 }
 
-const getTodoList = async () => {
-    const response = await fetch(`http://localhost:3001/todos`, {
-        // 2 th cùng tồn tại thì sẽ chạy th next
-        cache: "force-cache", // th này nó sẽ chạy dữ liệu cũ chứ kh chạy dữ liệu mới
-        next: {
-            // revalidate: 10,
-            tags: ["todo-list"]
-        }
-    });
+const getTodoList = unstable_cache(async () => {
+    const response = await fetch(`http://localhost:3001/todos`);
     const data = await response.json();
     return data;
-}
+}, [""], {
+    tags: ["todo-list"], // On-demand revalidation, Cache invalidation
+    // revalidate: 10, // Revalidate every 10 seconds, Time space
+})
+
+// Cache này xử lí trong quá trình render giống như useMemo.
+// const getTodoList = cache(async () => {
+//     const response = await fetch(`http://localhost:3001/todos`);
+//     const data = await response.json();
+//     return data;
+// })
 
 export default async function TodoPage() {
     const todoList = await getTodoList();
@@ -29,7 +34,7 @@ export default async function TodoPage() {
             <ul className="list-disc list-inside mt-3">
                 {
                     todoList.map((todo: ITodo) => (
-                        <li key={todo.id} className="flex justify-between">
+                        <li key={todo.id} className="flex justify-between items-center">
                             - {todo.title}
                             <div>
                                 <View id={todo.id} />
