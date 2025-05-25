@@ -1,6 +1,6 @@
 "use server"
 
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export const create = async (formData: FormData) => {
     const title = formData.get("title");
@@ -22,9 +22,9 @@ export const deleteTodo = async (id: string) => {
     const response = await fetch(`http://localhost:3001/todos/${id}`, {
         method: "DELETE",
     });
-    console.log(response);
     if (response.ok) {
-        revalidateTag("todo-list"); // xóa danh sách
+        // revalidateTag("todo-list"); // xóa danh sách
+        revalidatePath(`/todos`); // Xóa theo đường dẫn
         revalidateTag(`todo-${id}`); // Xóa chi tiết
     }
 }

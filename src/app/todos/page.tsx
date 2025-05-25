@@ -2,7 +2,9 @@ import React from "react";
 import Delete from "./_components/Delete";
 import Form from "./_components/Form";
 import View from "./_components/View";
-import { unstable_cache } from "next/cache";
+import { unstable_cacheLife as cacheLife } from "next/cache";
+import { cacheTag } from "next/dist/server/use-cache/cache-tag";
+// import { unstable_cache } from "next/cache";
 // import { cache } from "react";
 
 interface ITodo {
@@ -10,14 +12,14 @@ interface ITodo {
     title: string;
 }
 
-const getTodoList = unstable_cache(async () => {
-    const response = await fetch(`http://localhost:3001/todos`);
-    const data = await response.json();
-    return data;
-}, [""], {
-    tags: ["todo-list"], // On-demand revalidation, Cache invalidation
-    // revalidate: 10, // Revalidate every 10 seconds, Time space
-})
+// const getTodoList = unstable_cache(async () => {
+//     const response = await fetch(`http://localhost:3001/todos`);
+//     const data = await response.json();
+//     return data;
+// }, [""], {
+//     tags: ["todo-list"], // On-demand revalidation, Cache invalidation
+//     // revalidate: 10, // Revalidate every 10 seconds, Time space
+// })
 
 // Cache này xử lí trong quá trình render giống như useMemo.
 // const getTodoList = cache(async () => {
@@ -25,6 +27,15 @@ const getTodoList = unstable_cache(async () => {
 //     const data = await response.json();
 //     return data;
 // })
+
+const getTodoList = async () => {
+    "use cache";
+    // cacheLife("seconds");
+    cacheTag("todo-list"); // On-demand revalidation, Cache invalidation
+    const response = await fetch(`http://localhost:3001/todos`);
+    const data = await response.json();
+    return data;
+};
 
 export default async function TodoPage() {
     const todoList = await getTodoList();
