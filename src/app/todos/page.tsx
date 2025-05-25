@@ -1,7 +1,7 @@
 import React from "react";
-import { create } from "./action";
 import Delete from "./_components/Delete";
 import Form from "./_components/Form";
+import View from "./_components/View";
 
 interface ITodo {
     id: string;
@@ -17,7 +17,8 @@ const getTodoList = async () => {
             tags: ["todo-list"]
         }
     });
-    return response.json();
+    const data = await response.json();
+    return data;
 }
 
 export default async function TodoPage() {
@@ -28,9 +29,12 @@ export default async function TodoPage() {
             <ul className="list-disc list-inside mt-3">
                 {
                     todoList.map((todo: ITodo) => (
-                        <li key={todo.id}>
-                            {todo.title}
-                            <Delete id={todo.id} />
+                        <li key={todo.id} className="flex justify-between">
+                            - {todo.title}
+                            <div>
+                                <View id={todo.id} />
+                                <Delete id={todo.id} />
+                            </div>
                         </li>
                     ))
                 }

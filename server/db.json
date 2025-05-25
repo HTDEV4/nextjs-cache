@@ -1,24 +1,12 @@
 {
   "todos": [
     {
-      "title": "Todo 1",
-      "id": 1
-    },
-    {
       "title": "Học React",
       "id": 2
     },
     {
-      "title": "Học NextJS",
+      "title": "Học tùm lum",
       "id": 3
-    },
-    {
-      "title": "Học Java",
-      "id": 4
-    },
-    {
-      "title": "Học JS",
-      "id": 5
     }
   ]
 }
