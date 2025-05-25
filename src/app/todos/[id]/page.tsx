@@ -19,7 +19,7 @@ const getTodo = async (id: string) => {
 
 export default async function TodoDetailPage({ params
 }: {
-    params: { id: string }
+    params: Promise<{ id: string }>,
 }) {
     const { id } = await params;
     const todo = await getTodo(id);
