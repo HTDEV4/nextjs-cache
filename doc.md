@@ -31,3 +31,7 @@
 - Dynamic Rendering (SSR - Server Site Rendering): Là quá trình render trang web mà cần tới server, nó sẽ được lưu trong cache.
 
 - Khi xóa dữ liệu thì trong .next vẫn sinh ra các page mà chúng ta đã xóa nhưng nó chỉ xuất hiện trong trường hợp chúng ta đã revalidate (thêm bớt đi dữ liệu).
+
+### Static Rendering với 'use cache' directive
+
+- 'use cache' directive nó sẽ cho bạn làm việc với force-static mặc dù đó là dynamic API luôn.
