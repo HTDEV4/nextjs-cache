@@ -29,3 +29,5 @@
   - Nếu dữ liệu thay đổi thường xuyên, trang web sẽ không tự động cập nhật nội dung mới trừ khi build lại.
   - Với các trang sử dụng force-static (như trong Next.js), nội dung được cố định và không thể nhận giá trị mới cho = đến khi được rebuild.
 - Dynamic Rendering (SSR - Server Site Rendering): Là quá trình render trang web mà cần tới server, nó sẽ được lưu trong cache.
+
+- Khi xóa dữ liệu thì trong .next vẫn sinh ra các page mà chúng ta đã xóa nhưng nó chỉ xuất hiện trong trường hợp chúng ta đã revalidate (thêm bớt đi dữ liệu).

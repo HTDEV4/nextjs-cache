@@ -1,13 +1,27 @@
 import { notFound } from "next/navigation";
 
+// Sử dụng generateStaticParams thì dữ liệu sẽ được build ngay từ đầu, không cần phải fetch dữ liệu từ server
+// export async function generateStaticParams() { 
+//     const response = await fetch(`http://localhost:3001/todos`, {
+//         cache: "force-cache",
+//         next: {
+//             tags: [`todo-list`]
+//         }
+//     });
+//     const todoList = await response.json();
+//     return todoList.map((todo: { id: string }) => ({
+//         id: todo.id.toString(),
+//     }));
+// }
+
+export const dynamic = "force-static";
 const getTodo = async (id: string) => {
     const response = await fetch(`http://localhost:3001/todos/${id}`, {
         cache: "force-cache",
         next: {
             // revalidate: 10,
             // Khi đặc tag như này sẽ xảy ra lỗi là khi xóa cache của 1 cái thì tất cả cái còn lại sẽ bị xóa luôn
-            tags: [`todo-${id}`]
-
+            tags: [`todo-${id}`, "todo"]
         }
     });
     if (!response.ok) {
