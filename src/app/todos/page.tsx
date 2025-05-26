@@ -1,15 +1,12 @@
-"use cache"; // thằng này sẽ cache dữ liệu trong toàn file
-import Delete from "./_components/Delete";
+// "use cache"; // thằng này sẽ cache dữ liệu trong toàn file
+
 import Form from "./_components/Form";
-import View from "./_components/View";
-import { unstable_cacheLife as cacheLife } from "next/cache";
+import SearchForm from "./_components/SearchForm";
+import TodoList from "./_components/TodoList";
 
-interface ITodo {
-    id: string;
-    title: string;
-}
-
-interface IPost {
+// import { unstable_cacheLife as cacheLife } from "next/cache";
+// export const dynamic = "force-static"; // thằng này sẽ không hoạt động với dữ liệu dynamic, nó sẽ không cache dữ liệu trong phạm vi này. Nếu muốn dùng th này thì đưa nó về client 
+export interface ITodo {
     id: string;
     title: string;
 }
@@ -25,50 +22,15 @@ const getTodoList = async () => {
     return data;
 };
 
-const getPosts = async () => {
-    const response = await fetch(`http://localhost:3001/posts`, {
-        cache: "force-cache",
-        next: {
-            tags: ["post-list"],
-        }
-    });
-    return response.json();
-};
-
 export default async function TodoPage() {
-    cacheLife("minutes");
+    // cacheLife("minutes");
     const todoList = await getTodoList();
-    const postList = await getPosts();
+
     return (
         <div className="w-3/4 mx-auto py-3">
             <h2 className="text-4xl">Todo List</h2>
-            <ul className="list-disc list-inside mt-2">
-                {
-                    todoList.map((todo: ITodo) => (
-                        <li key={todo.id} className="flex justify-between items-center">
-                            - {todo.title}
-                            <div>
-                                <View id={todo.id} />
-                                <Delete id={todo.id} />
-                            </div>
-                        </li>
-                    ))
-                }
-            </ul>
-            <h2 className="text-4xl mt-3">Post List</h2>
-            <ul className="list-disc list-inside mt-2">
-                {
-                    postList.map((post: IPost) => (
-                        <li key={post.id} className="flex justify-between items-center">
-                            - {post.title}
-                            <div>
-                                <View id={post.id} />
-                                <Delete id={post.id} />
-                            </div>
-                        </li>
-                    ))
-                }
-            </ul>
+            <SearchForm />
+            <TodoList todoList={todoList} />
             <Form />
         </div>
     );
