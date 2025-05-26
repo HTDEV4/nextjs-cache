@@ -15,13 +15,23 @@ interface IPost {
 }
 
 const getTodoList = async () => {
-    const response = await fetch(`http://localhost:3001/todos`);
+    const response = await fetch(`http://localhost:3001/todos`, {
+        cache: "force-cache",
+        next: {
+            tags: ["todo-list"],
+        }
+    });
     const data = await response.json();
     return data;
 };
 
 const getPosts = async () => {
-    const response = await fetch(`http://localhost:3001/posts`);
+    const response = await fetch(`http://localhost:3001/posts`, {
+        cache: "force-cache",
+        next: {
+            tags: ["post-list"],
+        }
+    });
     return response.json();
 };
 
